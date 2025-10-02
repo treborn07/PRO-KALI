@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PENTEST PRO KALI - Domine a Arte do Hacking Ético</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-green: #00ff00;
+            --neon-blue: #00ffff;
+            --neon-purple: #ff00ff;
+            --dark-bg: #0a0a0a;
+            --darker-bg: #050505;
+            --text-color: #ffffff;
+            --accent-red: #ff0033;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background: var(--dark-bg);
+            color: var(--text-color);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #0a0a0a 0%, #001122 100%);
+            z-index: -2;
+            opacity: 0.8;
+        }
+        
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 0, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 0, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header Styles */
+        .cyber-header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(0, 255, 0, 0.1), rgba(0, 255, 255, 0.1));
+            border-bottom: 2px solid var(--neon-green);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cyber-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: var(--neon-green);
+            animation: scan 3s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .main-title {
+            font-size: 4rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            text-shadow: 
+                0 0 10px var(--neon-green),
+                0 0 20px var(--neon-green),
+                0 0 40px var(--neon-green);
+            animation: glitch 5s infinite;
+        }
+        
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--neon-blue);
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .cyber-badge {
+            display: inline-block;
+            background: var(--accent-red);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 0;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            border: 1px solid var(--neon-green);
+            box-shadow: 0 0 15px var(--accent-red);
+        }
+        
+        /* Section Styles */
+        .section {
+            padding: 80px 20px;
+            border-bottom: 1px solid rgba(0, 255, 0, 0.3);
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--neon-green);
+            margin-bottom: 40px;
+            text-align: center;
+            text-shadow: 0 0 10px var(--neon-green);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+        
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .feature-card {
+            background: rgba(0, 20, 0, 0.3);
+            border: 1px solid var(--neon-green);
+            padding: 30px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .feature-card:hover::before {
+            left: 100%;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 5px 15px rgba(0, 255, 0, 0.3),
+                inset 0 0 15px rgba(0, 255, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--neon-green);
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            color: var(--neon-blue);
+            margin-bottom: 15px;
+        }
+        
+        /* Bonus Section */
+        .bonus-section {
+            background: linear-gradient(135deg, rgba(0, 20, 40, 0.8), rgba(0, 40, 20, 0.8));
+            border: 2px solid var(--neon-blue);
+            position: relative;
+        }
+        
+        .bonus-badge {
+            position: absolute;
+            top: -20px;
+            right: 50px;
+            background: var(--neon-purple);
+            color: white;
+            padding: 10px 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 2px solid var(--neon-green);
+            box-shadow: 0 0 20px var(--neon-purple);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.1), rgba(0, 0, 255, 0.1));
+            border: 2px solid var(--neon-purple);
+        }
+        
+        .price {
+            font-size: 3rem;
+            color: var(--neon-green);
+            margin: 30px 0;
+            text-shadow: 0 0 15px var(--neon-green);
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: #888;
+            font-size: 1.5rem;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--neon-green), var(--neon-blue));
+            color: var(--dark-bg);
+            padding: 20px 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 5px;
+            margin: 30px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 30px var(--neon-green),
+                0 0 60px var(--neon-blue);
+        }
+        
+        .guarantee {
+            color: var(--neon-blue);
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+        
+        /* Footer */
+        .cyber-footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--darker-bg);
+            border-top: 1px solid var(--neon-green);
+        }
+        
+        .footer-text {
+            color: #888;
+            margin-bottom: 10px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Terminal Effect */
+        .terminal {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--neon-green);
+            border-radius: 5px;
+            padding: 20px;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+        
+        .terminal::before {
+            content: "root@pentest-pro:~#";
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--neon-green);
+            color: black;
+            padding: 0 10px;
+            font-weight: bold;
+        }
+        
+        .terminal-text {
+            color: var(--neon-green);
+            line-height: 1.8;
+        }
+        
+        .blink {
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-bg"></div>
+    <div class="cyber-grid"></div>
+    
+    <header class="cyber-header">
+        <div class="container">
+            <div class="cyber-badge">🚨 OFERTA POR TEMPO LIMITADO</div>
+            <h1 class="main-title">PENTEST PRO KALI</h1>
+            <p class="subtitle">Domine a Arte do Hacking Ético e Torne-se um Especialista em Segurança Cibernética</p>
+            
+            <div class="terminal">
+                <div class="terminal-text">
+                    <span>> Iniciando sequência de penetração...</span><br>
+                    <span>> Sistema de segurança detectado: KALI LINUX PRO</span><br>
+                    <span>> Carregando módulos avançados...</span><br>
+                    <span>> <span class="blink">_</span></span>
+                </div>
+            </div>
+            
+            <a href="https://knahack81.kpages.online/pentest-pro-kali-linux-62b23617-a822-49a4-9e15-0b3f0278d8e4?fbclid=PAb21jcANKTf9leHRuA2FlbQIxMQABpxt1YYvp_RPkHif2NsfHiJQwvAqhJ9ENGY5SvZ0jPqBDMM52td-b-PwYmnSQ_aem_a4HAp7zmcOPcUlLZsQBROA" class="cta-button">
+                <i class="fas fa-shield-alt"></i> ACESSAR TREINAMENTO
+            </a>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">O QUE VOCÊ VAI DOMINAR</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-terminal"></i>
+                    </div>
+                    <h3 class="feature-title">Kali Linux Profissional</h3>
+                    <p>Domine a distribuição Linux mais avançada para testes de penetração e auditoria de segurança.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3 class="feature-title">Análise de Redes</h3>
+                    <p>Aprenda a identificar vulnerabilidades em redes corporativas e implementar medidas de proteção.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bug"></i>
+                    </div>
+                    <h3 class="feature-title">Exploração de Vulnerabilidades</h3>
+                    <p>Descubra e explore falhas críticas em sistemas antes que hackers mal-intencionados o façam.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-secret"></i>
+                    </div>
+                    <h3 class="feature-title">Técnicas de Anonimato</h3>
+                    <p>Mantenha-se invisível durante testes de penetração usando técnicas profissionais de ofuscação.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <h3 class="feature-title">Relatórios Profissionais</h3>
+                    <p>Aprenda a criar relatórios detalhados que impressionam clientes e empregadores.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3 class="feature-title">Ferramentas Avançadas</h3>
+                    <p>Domine as principais ferramentas de pentesting usadas por profissionais do mundo todo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section bonus-section">
+        <div class="container">
+            <div class="bonus-badge">BÔNUS EXCLUSIVO</div>
+            <h2 class="section-title">SOFTWARE GUARDIAN SHIELD PRO</h2>
+            
+            <div class="terminal">
+                <div class="terminal-text">
+                    <span>> Sistema de segurança avançado detectado</span><br>
+                    <span>> Nome: GUARDIAN SHIELD PRO v3.0</span><br>
+                    <span>> Status: OPERACIONAL</span><br>
+                    <span>> Módulos carregados:</span><br>
+                    <span>>   🔍 Keylogger Avançado</span><br>
+                    <span>>   🌐 Monitor de Rede em Tempo Real</span><br>
+                    <span>>   🚨 Detecção de Intrusões</span><br>
+                    <span>>   🎤 Espionagem de Áudio</span><br>
+                    <span>>   📹 Monitor de Webcam</span><br>
+                    <span>>   🖥️ Captura de Tela Automática</span><br>
+                    <span>>   📧 Formulários de Captura</span><br>
+                    <span>>   🔒 Criptografia Avançada</span><br>
+                    <span>> Sistema pronto para deploy <span class="blink">_</span></span>
+                </div>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3 class="feature-title">🛡️ Sistema Completo de Segurança</h3>
+                    <p>Ferramenta profissional desenvolvida para agentes de segurança e pentesters. Monitoramento completo do sistema com detecção de intrusões em tempo real.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="feature-title">🎯 Para Profissionais</h3>
+                    <p>Ideal para testes de segurança, forense digital e monitoramento corporativo. Totalmente configurável e adaptável às suas necessidades.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="feature-title">💻 Multiplataforma</h3>
+                    <p>Desenvolvido para Linux com suporte a todas as funcionalidades avançadas de espionagem e segurança local.</p>
+                </div>
+            </div>
+            
+            <p style="text-align: center; margin-top: 30px; font-size: 1.2rem; color: var(--neon-blue);">
+                <strong>ATENÇÃO:</strong> Este software é fornecido <strong>GRATUITAMENTE</strong> para todos os alunos do Pentest Pro Kali<br>
+                <em>Uso ético e profissional apenas</em>
+            </p>
+        </div>
+    </section>
+
+    <section class="section cta-section">
+        <div class="container">
+            <h2 class="section-title">INVISTA NO SEU FUTURO</h2>
+            
+            <div class="price">
+                <span class="original-price">R$ 297,00</span><br>
+                <strong>R$ 100,00</strong><br>
+                <span style="font-size: 1rem;">à vista</span>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3 class="feature-title">🎓 Curso Completo</h3>
+                    <p>Acesso vitalício a todas as aulas e atualizações do Pentest Pro Kali</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="feature-title">🛠️ Guardian Shield Pro</h3>
+                    <p>Software profissional de segurança <strong>GRATUITO</strong> para alunos</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="feature-title">👨‍🏫 Suporte Individual</h3>
+                    <p>Tire suas dúvidas diretamente com o instrutor</p>
+                </div>
+            </div>
+            
+            <a href="https://knahack81.kpages.online/pentest-pro-kali-linux-62b23617-a822-49a4-9e15-0b3f0278d8e4?fbclid=PAb21jcANKTf9leHRuA2FlbQIxMQABpxt1YYvp_RPkHif2NsfHiJQwvAqhJ9ENGY5SvZ0jPqBDMM52td-b-PwYmnSQ_aem_a4HAp7zmcOPcUlLZsQBROA" class="cta-button">
+                <i class="fas fa-lock"></i> GARANTIR MINHA VAGA
+            </a>
+            
+            <p class="guarantee">
+                <i class="fas fa-shield-alt"></i> Garantia de 7 dias ou seu dinheiro de volta
+            </p>
+        </div>
+    </section>
+
+    <footer class="cyber-footer">
+        <div class="container">
+            <p class="footer-text">
+                <i class="fas fa-exclamation-triangle"></i> 
+                AVISO LEGAL: Todo o conteúdo é fornecido para fins educacionais e de testes de segurança autorizados. 
+                O uso inadequado das técnicas ensinadas é de total responsabilidade do usuário.
+            </p>
+            <p class="footer-text">
+                © 2024 Pentest Pro Kali. Todos os direitos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Efeitos interativos
+        document.addEventListener('DOMContentLoaded', function() {
+            // Efeito de digitação no terminal
+            const terminalText = document.querySelector('.terminal-text');
+            const originalText = terminalText.innerHTML;
+            
+            function typeWriter(element, text, speed = 50) {
+                element.innerHTML = '';
+                let i = 0;
+                
+                function typing() {
+                    if (i < text.length) {
+                        element.innerHTML += text.charAt(i);
+                        i++;
+                        setTimeout(typing, speed);
+                    }
+                }
+                
+                typing();
+            }
+            
+            // Iniciar efeito de digitação quando a página carregar
+            setTimeout(() => {
+                typeWriter(terminalText, originalText);
+            }, 1000);
+            
+            // Efeito de glitch aleatório nos títulos
+            const titles = document.querySelectorAll('.main-title, .section-title');
+            
+            setInterval(() => {
+                titles.forEach(title => {
+                    if (Math.random() > 0.7) {
+                        title.style.animation = 'glitch 0.3s';
+                        setTimeout(() => {
+                            title.style.animation = '';
+                        }, 300);
+                    }
+                });
+            }, 3000);
+            
+            // Contador regressivo (opcional)
+            function updateCountdown() {
+                const now = new Date();
+                const target = new Date();
+                target.setDate(now.getDate() + 1);
+                target.setHours(23, 59, 59, 999);
+                
+                const diff = target - now;
+                
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                document.querySelector('.cyber-badge').textContent = 
+                    `🚨 OFERTA TERMINA EM: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+        });
+    </script>
+</body>
+</html>

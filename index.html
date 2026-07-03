@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cyber Shield – Arsenal do Operador</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ===== RESET E BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #06090e;
+            color: #c8d6e5;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 25px;
+        }
+
+        /* ===== FUNDO COM EFEITO DE GRID ===== */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(74, 141, 183, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(74, 141, 183, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .bg-glow-bottom {
+            position: fixed;
+            bottom: -20%;
+            right: -10%;
+            width: 60%;
+            height: 60%;
+            z-index: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse, rgba(74, 141, 183, 0.04) 0%, transparent 70%);
+        }
+
+        /* ===== CABEÇALHO ===== */
+        .header {
+            position: relative;
+            z-index: 2;
+            padding: 20px 0 30px 0;
+            border-bottom: 1px solid #1a2a3a;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header .logo .shield {
+            font-size: 2.2rem;
+            color: #4a8db7;
+        }
+
+        .header .logo .title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: #4a5f6f;
+            letter-spacing: 2px;
+        }
+
+        .header .logo .title strong {
+            color: #e8edf2;
+            font-weight: 700;
+        }
+
+        .header .status {
+            background: #0f1a22;
+            border: 1px solid #1a2a3a;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            color: #4a8db7;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .header .status .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #4a8db7;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: dotPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 30px 0 50px 0;
+        }
+
+        .hero .badge-top {
+            display: inline-block;
+            background: #1a0a0a;
+            border: 1px solid #8a2a2a;
+            color: #e85a5a;
+            padding: 4px 20px;
+            font-size: 0.65rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 900;
+            color: #e8edf2;
+            letter-spacing: -2px;
+            line-height: 1.1;
+        }
+
+        .hero h1 span {
+            color: #4a8db7;
+            position: relative;
+        }
+
+        .hero h1 span::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #4a8db7;
+            opacity: 0.3;
+        }
+
+        .hero .sub {
+            font-size: 1.1rem;
+            color: #6a7f8f;
+            font-weight: 300;
+            max-width: 700px;
+            margin: 15px auto 0 auto;
+        }
+
+        .hero .sub strong {
+            color: #c8d6e5;
+            font-weight: 600;
+        }
+
+        /* ===== METADADOS ===== */
+        .meta-bar {
+            position: relative;
+            z-index: 2;
+            background: #0a121a;
+            border: 1px solid #1a2a3a;
+            border-radius: 6px;
+            padding: 15px 25px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 45px;
+            gap: 15px;
+        }
+
+        .meta-bar .item {
+            font-size: 0.75rem;
+            color: #4a5f6f;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .meta-bar .item span {
+            color: #a0b8c8;
+        }
+
+        .meta-bar .divider {
+            width: 1px;
+            height: 30px;
+            background: #1a2a3a;
+        }
+
+        /* ===== SEÇÃO: PROGRAMS (CARDS LATERAIS) ===== */
+        .section-title {
+            position: relative;
+            z-index: 2;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #e8edf2;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #1a2a3a;
+            padding-bottom: 12px;
+        }
+
+        .section-title .num {
+            color: #4a5f6f;
+            font-weight: 400;
+            margin-right: 12px;
+        }
+
+        .programs-grid {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+            margin-bottom: 50px;
+        }
+
+        .program-card {
+            background: #0a121a;
+            border: 1px solid #1a2a3a;
+            border-radius: 6px;
+            padding: 22px 24px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .program-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: #4a8db7;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .program-card:hover {
+            border-color: #2a4a5a;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .program-card:hover::before {
+            opacity: 1;
+        }
+
+        .program-card .icon {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .program-card .name {
+            font-weight: 700;
+            color: #e8edf2;
+            font-size: 1.05rem;
+        }
+
+        .program-card .desc {
+            color: #6a7f8f;
+            font-size: 0.9rem;
+            margin: 6px 0 12px 0;
+        }
+
+        .program-card .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .program-card .tags span {
+            background: #0f171f;
+            border: 1px solid #1a2a3a;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 0.6rem;
+            color: #4a8db7;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .program-card .platform {
+            font-size: 0.7rem;
+            color: #4a5f6f;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .program-card .platform strong {
+            color: #a0b8c8;
+            font-weight: 400;
+        }
+
+        /* ===== SEÇÃO: ANONIMATO (3 colunas) ===== */
+        .anon-grid {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .anon-item {
+            background: #0a121a;
+            border: 1px solid #1a2a3a;
+            border-radius: 6px;
+            padding: 20px 22px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .anon-item:hover {
+            border-color: #2a4a5a;
+            transform: translateY(-3px);
+        }
+
+        .anon-item .ico {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .anon-item .label {
+            font-weight: 600;
+            color: #e8edf2;
+            font-size: 0.95rem;
+        }
+
+        .anon-item .desc {
+            color: #6a7f8f;
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+
+        /* ===== SEÇÃO: OSINT E KIT ===== */
+        .kit-section {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .kit-box {
+            background: #0a121a;
+            border: 1px solid #1a2a3a;
+            border-radius: 6px;
+            padding: 22px 25px;
+        }
+
+        .kit-box .kit-title {
+            font-weight: 700;
+            color: #e8edf2;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #1a2a3a;
+            padding-bottom: 8px;
+        }
+
+        .kit-box .kit-title .emoji {
+            margin-right: 8px;
+        }
+
+        .kit-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .kit-box ul li {
+            color: #a0b8c8;
+            font-size: 0.9rem;
+            padding: 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .kit-box ul li::before {
+            content: "✓";
+            color: #4a8db7;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        /* ===== SEÇÃO: COMPATIBILIDADE ===== */
+        .compat-box {
+            position: relative;
+            z-index: 2;
+            background: #0a121a;
+            border: 1px solid #1a2a3a;
+            border-radius: 6px;
+            padding: 22px 25px;
+            margin-bottom: 50px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .compat-box .label {
+            font-weight: 600;
+            color: #e8edf2;
+            font-size: 0.95rem;
+        }
+
+        .compat-box .platforms {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            color: #6a7f8f;
+            font-size: 0.85rem;
+        }
+
+        .compat-box .platforms strong {
+            color: #a0b8c8;
+            font-weight: 400;
+        }
+
+        /* ===== BOTÃO DE AÇÃO ===== */
+        .cta-section {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            background: #0a121a;
+            border: 1px solid #1a2a3a;
+            border-radius: 6px;
+            padding: 45px 30px;
+            margin: 30px 0 50px 0;
+        }
+
+        .cta-section .big-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .cta-section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #e8edf2;
+            margin-bottom: 8px;
+        }
+
+        .cta-section p {
+            color: #6a7f8f;
+            max-width: 550px;
+            margin: 0 auto 20px auto;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: #1a3a4a;
+            border: 1px solid #4a8db7;
+            color: #e8edf2;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 14px 50px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: #1a4a5a;
+            border-color: #6aa8d7;
+            box-shadow: 0 0 40px rgba(74, 141, 183, 0.15);
+            transform: scale(1.02);
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            background: transparent;
+            border: 1px solid #4a5f6f;
+            color: #a0b8c8;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 10px 35px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            margin-top: 12px;
+        }
+
+        .btn-secondary:hover {
+            border-color: #4a8db7;
+            color: #e8edf2;
+            background: rgba(74, 141, 183, 0.05);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            position: relative;
+            z-index: 2;
+            border-top: 1px solid #0f1a22;
+            padding-top: 30px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        footer .brand {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: #4a5f6f;
+            letter-spacing: 2px;
+        }
+
+        footer .brand strong {
+            color: #4a8db7;
+        }
+
+        footer .divider {
+            width: 50px;
+            height: 1px;
+            background: #1a2a3a;
+            margin: 14px auto;
+        }
+
+        footer .social {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 12px 0;
+        }
+
+        footer .social a {
+            color: #4a5f6f;
+            font-size: 0.8rem;
+            transition: color 0.3s;
+            letter-spacing: 1px;
+        }
+
+        footer .social a:hover {
+            color: #4a8db7;
+        }
+
+        footer .copy {
+            font-size: 0.65rem;
+            color: #1a2a3a;
+            letter-spacing: 1px;
+        }
+
+        footer .copy .doc {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            color: #0f1a22;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 900px) {
+            .programs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .kit-section {
+                grid-template-columns: 1fr;
+            }
+
+            .anon-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .meta-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .meta-bar .divider {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 16px 14px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero .sub {
+                font-size: 0.95rem;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .anon-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .compat-box {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .compat-box .platforms {
+                gap: 10px;
+            }
+
+            .cta-section {
+                padding: 30px 20px;
+            }
+
+            .btn-primary {
+                width: 100%;
+                text-align: center;
+                padding: 14px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .program-card {
+                padding: 16px;
+            }
+
+            .program-card .tags span {
+                font-size: 0.5rem;
+                padding: 1px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== EFEITOS DE FUNDO ===== -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow-bottom"></div>
+
+    <div class="container">
+
+        <!-- =================================================== -->
+        <!-- CABEÇALHO                                           -->
+        <!-- =================================================== -->
+        <header class="header">
+            <div class="logo">
+                <span class="shield">&#9670;</span>
+                <div class="title">
+                    <strong>CYBER SHIELD</strong><br />
+                    ARSENAL DO OPERADOR
+                </div>
+            </div>
+            <div class="status">
+                <span class="dot"></span> ACESSO ATIVO
+            </div>
+        </header>
+
+        <!-- =================================================== -->
+        <!-- HERO                                               -->
+        <!-- =================================================== -->
+        <div class="hero">
+            <div class="badge-top">&#9679; INVENTÁRIO OPERACIONAL</div>
+            <h1>ARSENAL DO <span>OPERADOR</span></h1>
+            <p class="sub">
+                Programas, ferramentas e recursos que você recebe <strong>ao se inscrever</strong> na Operation: Cyber Shield
+            </p>
+        </div>
+
+        <!-- =================================================== -->
+        <!-- METADADOS                                           -->
+        <!-- =================================================== -->
+        <div class="meta-bar">
+            <div class="item">STATUS: <span>DISPONÍVEL</span></div>
+            <div class="divider"></div>
+            <div class="item">COMPATÍVEL: <span>WINDOWS / LINUX / TERMUX</span></div>
+            <div class="divider"></div>
+            <div class="item">ATUALIZAÇÃO: <span>CONTÍNUA</span></div>
+            <div class="divider"></div>
+            <div class="item">NÍVEL: <span>OPERACIONAL</span></div>
+        </div>
+
+        <!-- =================================================== -->
+        <!-- SEÇÃO 1 – PROGRAMAS OPERACIONAIS                    -->
+        <!-- =================================================== -->
+        <div class="section-title">
+            <span class="num">01.</span> PROGRAMAS OPERACIONAIS
+        </div>
+
+        <div class="programs-grid">
+
+            <div class="program-card">
+                <span class="icon">&#128065;</span>
+                <div class="name">Spyware – Módulo de Espionagem</div>
+                <div class="desc">Coleta de informações em dispositivos alvo. Captura de teclas, câmera, microfone, localização e arquivos.</div>
+                <div class="tags">
+                    <span>Keylogger</span>
+                    <span>Stealth</span>
+                    <span>Android</span>
+                    <span>Windows</span>
+                </div>
+                <div class="platform">&#9655; Rodável em <strong>Termux</strong> e <strong>Windows/Linux</strong></div>
+            </div>
+
+            <div class="program-card">
+                <span class="icon">&#128274;</span>
+                <div class="name">Ransomware – Simulador Tático</div>
+                <div class="desc">Simulação de ransomware para estudos de criptografia, propagação e resposta a incidentes.</div>
+                <div class="tags">
+                    <span>Criptografia</span>
+                    <span>Simulação</span>
+                    <span>Educacional</span>
+                </div>
+                <div class="platform">&#9655; Rodável em <strong>Termux</strong> e <strong>Windows/Linux</strong></div>
+            </div>
+
+            <div class="program-card">
+                <span class="icon">&#128231;</span>
+                <div class="name">Phishing – Templates Avançados</div>
+                <div class="desc">Pacote com templates de páginas falsas para estudo de engenharia social. Clones de redes sociais, bancos e serviços.</div>
+                <div class="tags">
+                    <span>Engenharia Social</span>
+                    <span>Clones</span>
+                    <span>Personalizável</span>
+                </div>
+                <div class="platform">&#9655; Compatível com <strong>Termux</strong> e <strong>Navegador</strong></div>
+            </div>
+
+            <div class="program-card">
+                <span class="icon">&#9889;</span>
+                <div class="name">Invasão – Exploitation Kit</div>
+                <div class="desc">Scripts e ferramentas para testes de invasão em servidores, redes e aplicações. Exploits, scanners e payloads.</div>
+                <div class="tags">
+                    <span>Metasploit</span>
+                    <span>Payloads</span>
+                    <span>Scanners</span>
+                </div>
+                <div class="platform">&#9655; Rodável em <strong>Termux</strong> e <strong>Linux</strong></div>
+            </div>
+
+        </div>
+
+        <!-- =================================================== -->
+        <!-- SEÇÃO 2 – ANONIMATO                                -->
+        <!-- =================================================== -->
+        <div class="section-title">
+            <span class="num">02.</span> ANONIMATO E SEGURANÇA OPERACIONAL
+        </div>
+
+        <div class="anon-grid">
+
+            <div class="anon-item">
+                <span class="ico">&#127759;</span>
+                <div class="label">VPN &amp; Proxy</div>
+                <div class="desc">Configuração de VPNs, proxies e Tor para navegação anônima</div>
+            </div>
+
+            <div class="anon-item">
+                <span class="ico">&#128274;</span>
+                <div class="label">Ofuscação de Identidade</div>
+                <div class="desc">Técnicas para mascarar MAC, IP e fingerprint do dispositivo</div>
+            </div>
+
+            <div class="anon-item">
+                <span class="ico">&#128737;</span>
+                <div class="label">Operações Stealth</div>
+                <div class="desc">Práticas para não deixar rastros em ambientes monitorados</div>
+            </div>
+
+        </div>
+
+        <!-- =================================================== -->
+        <!-- SEÇÃO 3 – OSINT E KIT                              -->
+        <!-- =================================================== -->
+        <div class="section-title">
+            <span class="num">03.</span> INTELIGÊNCIA E RECURSOS
+        </div>
+
+        <div class="kit-section">
+
+            <div class="kit-box">
+                <div class="kit-title"><span class="emoji">&#128270;</span> OSINT – Inteligência de Fontes Abertas</div>
+                <ul>
+                    <li>Maltego – Mapeamento de relacionamentos</li>
+                    <li>Recon-ng – Framework OSINT</li>
+                    <li>theHarvester – Coleta de e-mails e subdomínios</li>
+                    <li>Shodan – Scanner de dispositivos expostos</li>
+                    <li>Geolocalização via metadados e imagens</li>
+                    <li>Ferramentas de dark web e deep web</li>
+                </ul>
+            </div>
+
+            <div class="kit-box">
+                <div class="kit-title"><span class="emoji">&#128218;</span> Kit Completo do Operador</div>
+                <ul>
+                    <li>Kali Linux configurado com 100+ ferramentas</li>
+                    <li>Ebook "Vetores de Ataque Mais Letais"</li>
+                    <li>Checklist de Resposta a Incidentes</li>
+                    <li>Scripts automatizados de defesa</li>
+                    <li>Guia de instalação no Termux (passo a passo)</li>
+                    <li>Templates de relatórios profissionais</li>
+                    <li>Lista de C2 para estudos</li>
+                    <li>Guia de evasão de antivírus (AV Bypass)</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- =================================================== -->
+        <!-- SEÇÃO 4 – COMPATIBILIDADE                          -->
+        <!-- =================================================== -->
+        <div class="compat-box">
+            <span class="label">&#9655; Compatibilidade</span>
+            <div class="platforms">
+                <span><strong>Termux</strong> (Android)</span>
+                <span><strong>Windows</strong> 10/11</span>
+                <span><strong>Linux</strong> (Ubuntu, Debian, Kali)</span>
+                <span><strong>macOS</strong></span>
+            </div>
+            <span style="font-size:0.7rem; color:#4a5f6f; font-family:'JetBrains Mono', monospace;">+ guias de instalação</span>
+        </div>
+
+        <!-- =================================================== -->
+        <!-- SEÇÃO 5 – CHAMADA PARA AÇÃO                         -->
+        <!-- =================================================== -->
+        <div class="cta-section">
+            <span class="big-icon">&#9889;</span>
+            <h2>PRONTO PARA OPERAR?</h2>
+            <p>
+                Tenha acesso imediato a todo este arsenal e comece sua jornada como um operador de cibersegurança.
+            </p>
+
+            <a href="https://pay.hotmart.com/C69719540S" class="btn-primary" target="_blank">&#9654; Adquirir o Treinamento</a>
+            <br />
+            <a href="#" class="btn-secondary">&#8592; Voltar à página inicial</a>
+        </div>
+
+        <!-- =================================================== -->
+        <!-- FOOTER                                             -->
+        <!-- =================================================== -->
+        <footer>
+            <div class="brand">&#9670; <strong>CYBER SHIELD</strong> &#9670;</div>
+            <div class="divider"></div>
+
+            <div class="social">
+                <a href="https://instagram.com/r.robert_00" target="_blank">&#128247; @r.robert_00</a>
+            </div>
+
+            <div class="copy">
+                &copy; 2026 Operation: Cyber Shield – Arsenal do Operador
+                <span class="doc">DOC-NR: 2026-07-03 / BÔNUS / REV. A</span>
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+</html>
